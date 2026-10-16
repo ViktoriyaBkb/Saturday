@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using TMPro;
 
 public class PlayerSniper : MonoBehaviour
 {
@@ -13,7 +14,13 @@ public class PlayerSniper : MonoBehaviour
     [SerializeField] private float _zoomSpeed = 10f;
 
     [Header("Firing settings")]
-    [SerializeField] private float _range = 100f;  
+    [SerializeField] private float _range = 100f;
+
+    [Header("UI")]
+    [SerializeField] private GameObject _crosshair;
+    [SerializeField] private GameObject _sniperScore;
+    [SerializeField] private TextMeshProUGUI _scoreText;
+    private int _score = 0;
 
     private float _mouseX => _playerInput.InputMouseX;
     private float _mouseY => _playerInput.InputMouseY;
@@ -58,19 +65,35 @@ public class PlayerSniper : MonoBehaviour
             if (raycasthit.transform.name == "Target")
             {
                 Destroy(raycasthit.transform.gameObject);
+                _score++;
+                UpdateScoreUI();
                 Debug.Log("Target destroyed.");
             }
         }
     }
 
+    private void UpdateScoreUI()
+    {
+        if (_scoreText != null)
+        {
+            _scoreText.text = "KILLS: " + _score;
+        }
+    }
+
     private void HandleZoom()
     {
+        bool zoomed = _zoomHeld;
         float targetFOV;
         if (_zoomHeld)
             targetFOV = _zoomFOV; 
         else
             targetFOV = _normalFOV;
 
-        _camera.fieldOfView = Mathf.Lerp(_camera.fieldOfView, targetFOV, Time.deltaTime * _zoomSpeed);
+        _camera.fieldOfView = Mathf.Lerp(_camera.fieldOfView, targetFOV,
+            Time.deltaTime * _zoomSpeed);
+
+        if (_crosshair != null) _crosshair.SetActive(!zoomed);
+        if (_sniperScore != null) _sniperScore.SetActive(zoomed);
+
     }
 }

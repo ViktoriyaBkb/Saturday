@@ -7,6 +7,11 @@ public class PlayerInput : MonoBehaviour
     public bool InputZoom;
     public bool InputShoot;
 
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
     private void Update()
     {
         InputMouseX = Input.GetAxis("Mouse X");

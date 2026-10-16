@@ -13,7 +13,7 @@ public class TargetMover : MonoBehaviour
     }
     void Update()
     {
-        float offset = Mathf.Sin(Time.time * speed) * distance;
+        float offset = Mathf.Cos(Time.time * speed) * distance;
 
         transform.position = new Vector3(startPos.x + offset, startPos.y, startPos.z);
     }
