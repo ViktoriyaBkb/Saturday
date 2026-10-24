@@ -14,7 +14,7 @@ public class PlayerSniper : MonoBehaviour
     [SerializeField] private float _zoomSpeed = 10f;
 
     [Header("Firing settings")]
-    [SerializeField] private float _range = 100f;
+    [SerializeField] private float _range = 200f;
 
     [Header("UI")]
     [SerializeField] private GameObject _crosshair;
@@ -56,15 +56,16 @@ public class PlayerSniper : MonoBehaviour
     private void Shoot()
     {
         Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        RaycastHit raycasthit;
+        RaycastHit hit;
 
-        if (Physics.Raycast(ray, out raycasthit, _range))
+        if (Physics.Raycast(ray, out hit, _range))
         {
-            Debug.Log(raycasthit.transform.name);
+            Debug.Log(hit.transform.name);
 
-            if (raycasthit.transform.name == "Target")
+            if (hit.transform.TryGetComponent(out IDamagable damagableTarget))
             {
-                Destroy(raycasthit.transform.gameObject);
+                damagableTarget.ReceiveDamage(100f);
+
                 _score++;
                 UpdateScoreUI();
                 Debug.Log("Target destroyed.");

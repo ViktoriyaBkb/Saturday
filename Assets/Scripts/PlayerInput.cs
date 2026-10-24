@@ -7,6 +7,8 @@ public class PlayerInput : MonoBehaviour
     public bool InputZoom;
     public bool InputShoot;
 
+    public bool InputHoldBreath { get; private set; }
+
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -19,5 +21,7 @@ public class PlayerInput : MonoBehaviour
 
         InputZoom = Input.GetMouseButton(1);
         InputShoot = Input.GetMouseButton(0);
+
+        InputHoldBreath = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
     }
 }
