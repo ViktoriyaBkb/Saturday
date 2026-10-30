@@ -91,6 +91,12 @@ public class UIManager : MonoBehaviour
         Time.timeScale = _isPaused ? 0f : 1f;
         Cursor.lockState = _isPaused ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = _isPaused;
+
+        if (AudioManager.Instance != null)
+        {
+            if (_isPaused) AudioManager.Instance.PlayMenuMusic();
+            else AudioManager.Instance.PlayGameMusic();           
+        }
     }
 
 }

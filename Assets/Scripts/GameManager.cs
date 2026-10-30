@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     public bool IsGameOver = false;
 
     [Header("Timer Settings")]
-    [SerializeField] private float _roundTime = 30f; // Время на раунд в секундах
+    [SerializeField] private float _roundTime = 30f;
     public float TimeRemaining { get; private set; }
 
     private List<TargetHealth> _allTargets = new List<TargetHealth>();

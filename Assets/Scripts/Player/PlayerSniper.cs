@@ -28,6 +28,7 @@ public class PlayerSniper : MonoBehaviour
     {
         if (_camera == null) _camera = GetComponentInChildren<Camera>();
         if (_playerInput == null) _playerInput = GetComponent<PlayerInput>();
+
     }
 
     void Update()
@@ -56,6 +57,7 @@ public class PlayerSniper : MonoBehaviour
 
     private void Shoot()
     {
+        if (AudioManager.Instance != null) AudioManager.Instance.PlayShootSound();
         Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
 
         if (Physics.Raycast(ray, out RaycastHit hit, _range))
