@@ -22,6 +22,6 @@ public class PlayerInput : MonoBehaviour
         InputZoom = Input.GetMouseButton(1);
         InputShoot = Input.GetMouseButton(0);
 
-        InputHoldBreath = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+        InputHoldBreath = Input.GetKey(KeyCode.LeftShift);
     }
 }

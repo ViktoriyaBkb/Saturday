@@ -19,8 +19,6 @@ public class PlayerSniper : MonoBehaviour
     [Header("UI")]
     [SerializeField] private GameObject _crosshair;
     [SerializeField] private GameObject _sniperScore;
-    [SerializeField] private TextMeshProUGUI _scoreText;
-    private int _score = 0;
 
     private float _mouseX => _playerInput.InputMouseX;
     private float _mouseY => _playerInput.InputMouseY;
@@ -34,6 +32,9 @@ public class PlayerSniper : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance != null && (GameManager.Instance.IsGameOver || Time.timeScale == 0f))
+            return;
+
         HadleLook();
         HandleZoom();
         HadleShooting();
@@ -56,30 +57,24 @@ public class PlayerSniper : MonoBehaviour
     private void Shoot()
     {
         Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, _range))
+        if (Physics.Raycast(ray, out RaycastHit hit, _range))
         {
-            Debug.Log(hit.transform.name);
-
-            if (hit.transform.TryGetComponent(out IDamagable damagableTarget))
+            if (hit.transform.CompareTag("Target"))
             {
-                damagableTarget.ReceiveDamage(100f);
+                if (hit.transform.TryGetComponent(out IDamagable damagableTarget))
+                {
+                    damagableTarget.ReceiveDamage(100f);
+                }
 
-                _score++;
-                UpdateScoreUI();
-                Debug.Log("Target destroyed.");
+                if (GameManager.Instance != null)
+                {
+                    GameManager.Instance.OnTargetKilled(true);
+                }
             }
         }
     }
 
-    private void UpdateScoreUI()
-    {
-        if (_scoreText != null)
-        {
-            _scoreText.text = "KILLS: " + _score;
-        }
-    }
 
     private void HandleZoom()
     {
